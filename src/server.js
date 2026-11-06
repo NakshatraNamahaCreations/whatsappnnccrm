@@ -11,7 +11,7 @@ process.on("unhandledRejection", (e) => console.error("Unhandled error:", e?.mes
 const start = async () => {
   await connectDB();
   const server = http.createServer(app);
-  initSocket(server, env.clientUrl);
+  initSocket(server, env.allowOrigin);
   server.listen(env.port, () => {
     console.log(`Server running on http://localhost:${env.port}`);
     console.log(`WhatsApp mode: ${env.provider}`);

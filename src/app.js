@@ -9,8 +9,8 @@ import { notFound, errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
 
-app.use(helmet());
-app.use(cors({ origin: env.clientUrl, credentials: true }));
+app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
+app.use(cors({ origin: env.allowOrigin, credentials: true }));
 app.use(express.json({ limit: "5mb" }));
 app.use(cookieParser());
 if (env.nodeEnv === "development") app.use(morgan("dev"));

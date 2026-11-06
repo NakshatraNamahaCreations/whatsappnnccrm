@@ -23,6 +23,15 @@ export const env = {
   nodeEnv: process.env.NODE_ENV || "development",
   // one or more allowed site addresses, comma separated (e.g. http://localhost:5173,https://mysite.netlify.app)
   clientUrl: (process.env.CLIENT_URL || "http://localhost:5173").split(",").map((u) => u.trim().replace(/\/$/, "")).filter(Boolean),
+  // CORS check: CLIENT_URL entries, any localhost port, and the Netlify site (incl. its deploy previews)
+  allowOrigin: (origin, cb) => {
+    if (!origin) return cb(null, true);
+    const ok =
+      env.clientUrl.includes(origin) ||
+      /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin) ||
+      /^https:\/\/([a-z0-9-]+--)?capable-marshmallow-92e1d4\.netlify\.app$/.test(origin);
+    cb(null, ok);
+  },
   // "embedded" = MongoDB stored in backend/data (no install), "memory" = throwaway demo DB, or a real mongodb:// URI
   mongoUri: process.env.MONGO_URI || "embedded",
   jwtSecret: process.env.JWT_SECRET,
