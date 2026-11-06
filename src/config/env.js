@@ -21,7 +21,8 @@ const provider = (process.env.WA_PROVIDER || "baileys").toLowerCase();
 export const env = {
   port: process.env.PORT || 5001,
   nodeEnv: process.env.NODE_ENV || "development",
-  clientUrl: process.env.CLIENT_URL || "http://localhost:5173",
+  // one or more allowed site addresses, comma separated (e.g. http://localhost:5173,https://mysite.netlify.app)
+  clientUrl: (process.env.CLIENT_URL || "http://localhost:5173").split(",").map((u) => u.trim().replace(/\/$/, "")).filter(Boolean),
   // "embedded" = MongoDB stored in backend/data (no install), "memory" = throwaway demo DB, or a real mongodb:// URI
   mongoUri: process.env.MONGO_URI || "embedded",
   jwtSecret: process.env.JWT_SECRET,
